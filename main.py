@@ -93,19 +93,35 @@ class Employee(Person):
     return "Vacation Days: " + str(self.vacationdays)
 
 
-emp1 = Employee('Jack', 'Krichen', 'Manager', 500000, 1)
+class Contractor(Person):
+  def __init__(self,fname,lname,title,wage,contractorid):
+    super().__init__(fname,lname,title)
+    self.contractorid = contractorid
+    self.hourlywage = wage
 
-print(emp1.get_firstname())
-print(emp1.get_lastname())
-print(emp1.get_employeeid())
-print(emp1.get_jobtitle())
-print(emp1.get_salary())
+  #return contractor id
+  def get_contractorid(self):
+    return "Contractor ID: " + str(self.contractorid)
 
-print(emp1.get_vacation_days())
-emp1.take_vacation_days(10)
-print(emp1.get_vacation_days())
-emp1.take_vacation_days(10)
-emp1.take_vacation_days(-1)
+  #set hourly wage
+  def set_hourlywage(self, wage):
+    if wage > 0:
+      self.hourlywage = wage
 
-emp1.increase_vacation_days_yearly()
-print(emp1.get_vacation_days())
+  #return wage
+  def get_hourlywage(self):
+    return "${:,.2f}".format(self.hourlywage)
+
+  #sets job wage if wage greater than 0
+  def set_get_hourlywage(self,get_hourlywage):
+    if get_hourlywage > 0:
+      self.wage = get_hourlywage
+
+con = Contractor('Temp','Emp','Developer',60,2)
+print(con.get_firstname())
+print(con.get_lastname())
+print(con.get_contractorid())
+print(con.get_jobtitle())
+print(con.get_hourlywage())
+print(con.set_hourlywage(50))
+print(con.get_hourlywage())
