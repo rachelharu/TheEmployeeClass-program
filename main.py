@@ -1,12 +1,10 @@
 import datetime
 
-class Employee:
-  def __init__(self, fname, lname, empid, title, sal):
+class Person:
+  def __init__(self, fname, lname, title):
     self.firstname = fname
     self.lastname = lname
-    self.employeeid = empid
     self.jobtitle = title
-    self.salary = sal
 
     self.hireddate = datetime.date.today()
 
@@ -15,7 +13,7 @@ class Employee:
     return self.firstname
 
   #sets firstname if fname isn't an empty string
-  def set_firstname(self,fname):
+  def set_firstname(self, fname):
     if len(fname) > 0:
       self.firstname = fname
 
@@ -24,7 +22,7 @@ class Employee:
     return self.lastname
 
   #set lastname if lname isn't an empty string
-  def set_lastname(self,lname):
+  def set_lastname(self, lname):
     if len(lname) > 0:
       self.lastname = lname
 
@@ -33,11 +31,20 @@ class Employee:
     return self.jobtitle
 
   #sets job title if job title isn't an empty string
-  def set_jobtitle(self,title):
+  def set_jobtitle(self, title):
     if len(title) > 0:
       self.jobtitle = title
-  
-  #return employee id
+
+
+class Employee(Person):
+  def __init__(self, fname, lname, title, sal, empid):
+    super().__init__(fname, lname, title)
+    self.employeeid = empid
+    self.salary = sal
+    self.vacationdaysperyear = 14
+    self.vacationdays = self.vacationdaysperyear
+
+  #returns employee id
   def get_employeeid(self):
     return "Employee ID: " + str(self.employeeid)
 
@@ -46,24 +53,59 @@ class Employee:
     return "${:,.2f}".format(self.salary)
 
   #sets salary if salary isn't an empty string
-  def set_salary(self,sal):
-    if sal > 0:
-      self.salary = sal
+  def set_salary(self, sal):
+    return "${:,.2f}".format(self.salary)
 
   #increase salary
-  def increase_salary(self,percent):
+  def increase_salary(self, percent):
     if percent > 0:
       self.set_salary(self.salary + self.salary * percent)
     else:
       print("Increase of salary must be greater than 0.")
-    
-empdata = Employee("Steven", "Evens", 9090, "Director of Custodial arts", 100000)
-print(empdata.get_firstname())
-print(empdata.get_lastname())
-print(empdata.get_employeeid())
-print(empdata.get_jobtitle())
-print(empdata.get_salary())
 
-#increase of salary
-empdata.increase_salary(0.02)
-print("After increase: " + empdata.get_salary())
+  #increase vacation days per year
+  def increase_vacation_days_per_year(self, days):
+    if days > 0:
+      self.vacationdayspersyear = self.vacationdaysperyear + days
+
+  #increase vacation days
+  def increase_vacation_days(self, days):
+    if days > 0:
+      self.vacationdays = self.vacation + days
+
+  #increase vacation days by year
+  def increase_vacation_days_yearly(self):
+    self.vacationdays = self.vacationdays + self.vacationdaysperyear
+
+  #take some vacation days
+  def take_vacation_days(self, days):
+    if days > 0 and self.vacationdays - days >= 0:
+      self.vacationdays = self.vacationdays - days
+    elif days <= 0:
+      print("Vacation days taken must be greater than 0.")
+    elif self.vacationdays - days < 0:
+      print(
+        f"Employee does not have enough vacation days to take off {days} days."
+      )
+
+    #return vacation days
+  def get_vacation_days(self):
+    return "Vacation Days: " + str(self.vacationdays)
+
+
+emp1 = Employee('Jack', 'Krichen', 'Manager', 500000, 1)
+
+print(emp1.get_firstname())
+print(emp1.get_lastname())
+print(emp1.get_employeeid())
+print(emp1.get_jobtitle())
+print(emp1.get_salary())
+
+print(emp1.get_vacation_days())
+emp1.take_vacation_days(10)
+print(emp1.get_vacation_days())
+emp1.take_vacation_days(10)
+emp1.take_vacation_days(-1)
+
+emp1.increase_vacation_days_yearly()
+print(emp1.get_vacation_days())
